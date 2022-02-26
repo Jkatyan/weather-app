@@ -22,7 +22,7 @@ class App extends Component {
 
   setZipCode(val) {
     this.setState({
-      zip_code: val.target.value,
+      zip_code: val.target.value
     });
   }
 
@@ -45,11 +45,15 @@ class App extends Component {
   }
 
   getFahrenheit(temp) {
-
+    return (
+      1.8 * (temp - 273.15) + 32
+    );
   }
 
   getCelsius(temp) {
-
+    return (
+      temp - 273.15
+    );
   }
 
   render() {
@@ -76,6 +80,7 @@ class App extends Component {
               Get Temperature
             </Button>
           </Form>
+          {this.getCelsius(this.state.temperature)}
         </header>
       </div>
     );
