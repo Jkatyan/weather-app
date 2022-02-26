@@ -5,8 +5,11 @@ import axios from "axios";
 import { Form, Button, Alert } from "react-bootstrap";
 
 class App extends Component {
+
   state = {
-    visible: false
+    visible: false,
+    zip_code: '',
+    api_key: 'a69a12410c5c4afe27ab1395d005f0be'
   };
 
   toggle() {
@@ -15,16 +18,27 @@ class App extends Component {
     });
   }
 
-  getZipCode(zip) {
-    /*
-    axios.get()
+  createURL() {
+    return (
+      'https://api.openweathermap.org/data/2.5/weather?zip=' + this.state.zip_code
+                                              + ',us&appid=' + this.state.api_key
+    );
+  }
+  
+  setZipCode(val) {
+    this.setState({
+      zip_code: val.target.value
+    });
+  }
+
+  getZipCode() {
+    axios.get(this.createURL())
     .then(response => {
-        console.log(reponse)
+        console.log(response)
     })
     .catch(error => {
         console.log(error)
     })
-    */
   }
 
   render() {
@@ -38,7 +52,7 @@ class App extends Component {
                 <Form.Control
                   type="entry"
                   placeholder="Enter Zip Code"
-                  onChange={this.getZipCode}
+                  onChange={this.setZipCode.bind(this)}
                 />
                 <Form.Text className="text-muted">
                   Please enter a Postal / Zip Code.
@@ -47,7 +61,7 @@ class App extends Component {
 
               <Button variant="primary"
                       type="button"
-                      onClick={this.toggle.bind(this)}>
+                      onClick={this.getZipCode.bind(this)}>
                 Submit
               </Button>
             </Form>
