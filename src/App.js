@@ -7,25 +7,9 @@ import { Form, Button } from "react-bootstrap";
 class App extends Component {
   state = {
     zip_code: "",
+    temperature: 0,
     api_key: "a69a12410c5c4afe27ab1395d005f0be",
   };
-
-  setZipCode(val) {
-    this.setState({
-      zip_code: val.target.value,
-    });
-  }
-
-  getZipCode() {
-    axios
-      .get(this.createURL())
-      .then((response) => {
-        console.log(response);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }
 
   createURL() {
     return (
@@ -34,6 +18,38 @@ class App extends Component {
       ",us&appid=" +
       this.state.api_key
     );
+  }
+
+  setZipCode(val) {
+    this.setState({
+      zip_code: val.target.value,
+    });
+  }
+
+  setTemperature(val) {
+    this.setState({
+      temperature: val
+    });
+  }
+
+  getTemperature() {
+    axios
+      .get(this.createURL())
+      .then((response) => {
+        console.log(response);
+        this.setTemperature(response.data.main.temp);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }
+
+  getFahrenheit(temp) {
+
+  }
+
+  getCelsius(temp) {
+
   }
 
   render() {
@@ -55,7 +71,7 @@ class App extends Component {
             <Button
               variant="primary"
               type="button"
-              onClick={this.getZipCode.bind(this)}
+              onClick={this.getTemperature.bind(this)}
             >
               Get Temperature
             </Button>
