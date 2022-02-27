@@ -10,6 +10,7 @@ class App extends Component {
     temperature: 0,
     valid_response: false,
     checked: "Fahrenheit",
+    display_text: "Current Temperature:",
     api_key: "a69a12410c5c4afe27ab1395d005f0be",
   };
 
@@ -34,36 +35,28 @@ class App extends Component {
     });
   }
 
+  setDisplayText(val) {
+    this.setState({
+      display_text: val,
+    });
+  }
+
   setValidResponse(val) {
     this.setState({
       valid_response: val,
     });
   }
 
-  setFahrenheit(val) {
+  setFahrenheit() {
     this.setState({
       checked: "Fahrenheit",
     });
   }
 
-  setCelsius(val) {
+  setCelsius() {
     this.setState({
       checked: "Celsius",
     });
-  }
-
-  getTemperature() {
-    axios
-      .get(this.createURL())
-      .then((response) => {
-        console.log(response);
-        this.setValidResponse(true);
-        this.setTemperature(response.data.main.temp);
-      })
-      .catch((error) => {
-        this.setValidResponse(false);
-        console.log(error);
-      });
   }
 
   getFahrenheit(temp) {
@@ -72,6 +65,27 @@ class App extends Component {
 
   getCelsius(temp) {
     return temp - 273.15;
+  }
+
+  getTemperature() {
+    axios
+      .get(this.createURL())
+      .then((response) => {
+        console.log(response);
+        if (this.state.checked == "Fahrenheit") {
+          this.setTemperature(this.getFahrenheit(response.data.main.temp));
+        }
+        else if (this.state.checked == "Celsius"){
+          this.setTemperature(this.getCelsius(response.data.main.temp));
+        }
+        this.setDisplayText("Current Temperature: " + this.state.temperature);
+        this.setValidResponse(true);
+      })
+      .catch((error) => {
+        console.log(error);
+        this.setDisplayText("Current Temperature: Invalid Zip Code");
+        this.setValidResponse(false);
+      });
   }
 
   render() {
@@ -107,6 +121,7 @@ class App extends Component {
               />
             </Form.Group>
             <br />
+
             {/* Submit Button */}
             <Button
               variant="primary"
@@ -116,6 +131,7 @@ class App extends Component {
               Get Temperature
             </Button>
           </Form>
+          {this.state.display_text}
         </header>
       </div>
     );
