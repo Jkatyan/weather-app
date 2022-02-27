@@ -14,11 +14,11 @@ function getCelsius(temp) {
 }
 
 app.get('/', (req, res) => {
-    res.send('Please specify a location.')
+    res.status(400).send('Please specify a location.')
 })
 
 app.get('/locations', (req, res) => {
-    res.send('Please specify a location.')
+    res.status(400).send('Please specify a location.')
 })
 
 app.get('/locations/:zipcode/:scale?', (req, res) => {
@@ -32,15 +32,14 @@ app.get('/locations/:zipcode/:scale?', (req, res) => {
                 if (req.query.scale === 'Celsius'){
                     scale = 'Celsius';
                     temperature = getCelsius(temperature);
-                    return res.send({temperature, scale});
                 }
                 else {
                 temperature = getFahrenheit(temperature);
-                return res.send({temperature, scale});
                 }
+                return res.status(200).send({temperature, scale});
             }
             else {
-                return res.send('Please enter a valid Zip Code.');
+                return res.status(400).send('Please enter a valid Zip Code.');
             }
         })
 });
