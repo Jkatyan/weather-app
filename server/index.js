@@ -21,9 +21,9 @@ app.get('/locations', (req, res) => {
     res.status(400).send('Please specify a location.')
 })
 
-app.get('/locations/:zipcode', (req, res) => {
+app.get('/locations/:zip-code', (req, res) => {
     request(
-        "https://api.openweathermap.org/data/2.5/weather?zip=" + req.params.zipcode + ",us&appid=" + apiKey,
+        "https://api.openweathermap.org/data/2.5/weather?zip=" + req.params.zip-code + ",us&appid=" + apiKey,
         function(error, response, body) {
             if(!error && response.statusCode == 200) {
                 var responseData = JSON.parse(body);
