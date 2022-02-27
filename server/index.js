@@ -1,8 +1,8 @@
 const express = require('express')
 var request = require('request')
 const app = express()
-const apiPort = 3000
 
+const apiPort = 3000
 const apiKey = 'a69a12410c5c4afe27ab1395d005f0be'
 
 function getFahrenheit(temp) {
@@ -21,7 +21,7 @@ app.get('/locations', (req, res) => {
     res.status(400).send('Please specify a location.')
 })
 
-app.get('/locations/:zipcode/:scale?', (req, res) => {
+app.get('/locations/:zipcode', (req, res) => {
     request(
         "https://api.openweathermap.org/data/2.5/weather?zip=" + req.params.zipcode + ",us&appid=" + apiKey,
         function(error, response, body) {

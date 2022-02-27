@@ -8,20 +8,9 @@ class App extends Component {
   state = {
     zip_code: "",
     temperature: 0,
-    valid_response: false,
     checked: "Fahrenheit",
-    display_text: "Current Temperature:",
-    api_key: "a69a12410c5c4afe27ab1395d005f0be",
+    checked_final: "",
   };
-
-  createURL() {
-    return (
-      "https://api.openweathermap.org/data/2.5/weather?zip=" +
-      this.state.zip_code +
-      ",us&appid=" +
-      this.state.api_key
-    );
-  }
 
   setZipCode(val) {
     this.setState({
@@ -32,18 +21,6 @@ class App extends Component {
   setTemperature(val) {
     this.setState({
       temperature: val,
-    });
-  }
-
-  setDisplayText(val) {
-    this.setState({
-      display_text: val,
-    });
-  }
-
-  setValidResponse(val) {
-    this.setState({
-      valid_response: val,
     });
   }
 
@@ -59,33 +36,20 @@ class App extends Component {
     });
   }
 
-  getFahrenheit(temp) {
-    return 1.8 * (temp - 273.15) + 32;
-  }
-
-  getCelsius(temp) {
-    return temp - 273.15;
+  setCheckedFinal() {
+    this.setState({
+      checked_final: this.state.checked,
+    });
   }
 
   getTemperature() {
     axios
-      .get(this.createURL())
+      .get("/locations/" + this.state.zip_code + "?scale=" + this.state.checked)
       .then((response) => {
-        console.log(response);
-        if (this.state.checked == "Fahrenheit") {
-          this.setTemperature(this.getFahrenheit(response.data.main.temp));
-        }
-        else if (this.state.checked == "Celsius"){
-          this.setTemperature(this.getCelsius(response.data.main.temp));
-        }
-        this.setDisplayText("Current Temperature: " + this.state.temperature);
-        this.setValidResponse(true);
+        console.log(response)
+        this.setCheckedFinal()
+        this.setTemperature(response.data.temperature)
       })
-      .catch((error) => {
-        console.log(error);
-        this.setDisplayText("Current Temperature: Invalid Zip Code");
-        this.setValidResponse(false);
-      });
   }
 
   render() {
@@ -131,7 +95,8 @@ class App extends Component {
               Get Temperature
             </Button>
           </Form>
-          {this.state.display_text}
+          <br />
+          <p>The temperature is: <b>{this.state.temperature} {this.state.checked_final}</b></p>
         </header>
       </div>
     );
