@@ -96,7 +96,7 @@ class App extends Component {
             </Button>
           </Form>
           <br />
-          <p>The temperature is: <b>{this.state.temperature} {this.state.checked_final}</b></p>
+          <p>The temperature is: <b>{this.state.temperature}° {this.state.checked_final}</b></p>
         </header>
       </div>
     );
