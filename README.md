@@ -10,7 +10,7 @@
 followed by 
 `npm start`
 
-#### Change directories to *server* and run:
+#### Change directories to */server* and run:
 
 `node server.mjs`
 
