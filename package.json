@@ -20,7 +20,7 @@
   "scripts": {
     "start": "set PORT=8080 && react-scripts start",
     "build": "react-scripts build",
-    "test": "jest",
+    "test": "NODE_OPTIONS=--experimental-vm-modules jest",
     "eject": "react-scripts eject"
   },
   "eslintConfig": {
